@@ -20,13 +20,13 @@ For the start, the focus lies only on NetAtmo data.
 
 
 
-**Rough Time-Line**
+**Time-Line**
 
 - [x] Lecture weeks 01-07 - Lecture information and exercises 
 - [x] (23.04) - Set-up project
 - [x] (30.04) - Set-up data to be used
-- [x] (14.05) - Implement clickable points
-- [ ] (28.05) - Implement pop-up
+- [ ] (14.05) - Render points
+- [ ] (28.05) - Implement clickable points with feedback
 - [ ] (11.06) - Overlay points and pop-ups on map
 - [ ] (25.06) - Implement way to navigate in set time-steps
 
