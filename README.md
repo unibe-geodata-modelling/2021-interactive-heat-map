@@ -25,11 +25,10 @@ For the start, the focus lies only on NetAtmo data.
 - [x] Lecture weeks 01-07 - Lecture information and exercises 
 - [x] (23.04) - Set-up project
 - [x] (30.04) - Set-up data to be used
-- [ ] (14.05) - Render points
-- [ ] (28.05) - Implement clickable points with feedback
-- [ ] (11.06) - Overlay points and pop-ups on map
-- [ ] (25.06) - Implement way to navigate in set time-steps
-
+- [X] (12.06) - Render points
+- [ ] (19.06) - Implement clickable points with feedback
+- [ ] (26.06) - Overlay points and pop-ups on map
+- [ ] (01.07) - Implement way to navigate in set time-steps
 
 
 **Project Requirements:**
