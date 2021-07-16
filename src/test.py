@@ -1,10 +1,10 @@
+from bokeh.io import save
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, output_file, show
 from bokeh.tile_providers import get_provider
-import bokeh
 # import data_reader
 import matplotlib.pyplot as plt
-
+from bokeh.models import HoverTool
 import pandas as pd
 # import descartes
 import geopandas as gpd
@@ -63,41 +63,46 @@ geo_df = gpd.GeoDataFrame(df, crs='epsg:4326', geometry=geometry)
 geo_df_1 = geo_df.to_crs("EPSG:3035")
 
 print("Plotting...")
-bern_map.plot(ax=ax, alpha=0.4, color="grey")
-geo_df_1.plot(ax=ax, marker='*', color='green', markersize=5)
+# bern_map.plot(ax=ax, alpha=0.4, color="grey")
+# geo_df_1.plot(ax=ax, marker='*', color='green', markersize=5)
 # plt.legend(prop={'size': 50})
-plt.show()
+# plt.show()
 
 # TODO Set to Switzerland standard, mouse-over text of loggers, verify that locations are correct
 print("Setting up Bokeh...") # Source https://docs.bokeh.org/en/latest/docs/user_guide/geo.html
-output_file("Bern-Map.html")
-source = ColumnDataSource(df)
 
-tile_provider = get_provider("CARTODBPOSITRON_RETINA") #Many Provider Variants https://docs.bokeh.org/en/latest/docs/reference/tile_providers.html
 
-# range bounds supplied in web mercator coordinates
-p = figure(x_range=(-1000000, 6000000), y_range=(-1000000, 6000000),
-           x_axis_type="mercator", y_axis_type="mercator" # Notice that passing x_axis_type="mercator" and y_axis_type="mercator" to figure generates axes with latitude and longitude labels, instead of raw Web Mercator coordinates.
-           )
-p.add_tile(tile_provider)
+
 
 # p.scatter(x=df['lon'], y=df['lat'], source=source)
 
-geo_df_bokeh = geo_df.to_crs("EPSG:3785")
+geo_df_bokeh = geo_df.to_crs("EPSG:3785") # https://spatialreference.org/ref/epsg/etrs89-etrs-laea/
 
 # create a Python dict as the basis of your ColumnDataSource
 data = {'x_values': geo_df_bokeh['geometry'].x,
-        'y_values': geo_df_bokeh['geometry'].y}
+        'y_values': geo_df_bokeh['geometry'].y,
+        'p_id': geo_df_bokeh['p_id'],
+        'ta_int': geo_df_bokeh['ta_int']}
 
 # create a ColumnDataSource by passing the dict
 source = ColumnDataSource(data=data)
 
-# create a plot using the ColumnDataSource's two columns
-# p2 = figure()
-# p2.circle(x='x_values', y='y_values', source=source)
+print("Rendering Bokeh Map...")
+tile_provider = get_provider("CARTODBPOSITRON_RETINA") #Many Provider Variants https://docs.bokeh.org/en/latest/docs/reference/tile_providers.html
 
+# range bounds supplied in web mercator coordinates
+p = figure(x_range=(825000, 833000), y_range=(5933000, 5935000),
+           x_axis_type="mercator", y_axis_type="mercator", # Notice that passing x_axis_type="mercator" and y_axis_type="mercator" to figure generates axes with latitude and longitude labels, instead of raw Web Mercator coordinates.
+           x_axis_label="Longitude", y_axis_label="Latitude")
+p.add_tile(tile_provider)
 p.circle(x='x_values', y='y_values', source=source)
 
+my_hover = HoverTool() # https://automating-gis-processes.github.io/2016/Lesson5-interactive-map-bokeh.html#adding-interactivity-to-the-map
+my_hover.tooltips = [('pid of Loggers', '@p_id'), ('Temp', '@ta_int')]
+p.add_tools(my_hover)
+
+
+output_file("Bern-Map.html")
 show(p)
 
 
