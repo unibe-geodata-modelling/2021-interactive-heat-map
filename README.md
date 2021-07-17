@@ -12,14 +12,14 @@ Name: Brian Schweigler
 E-Mail: brian.schweigler@students.unibe.ch
 
 ## Objectives
--[X] Display CWS  on geospatial map.
--[X] Display relevant (meta-) information on-click of points.
--[ ] Optional: *Animate* data / maps.
+- [X] Display CWS  on geospatial map.
+- [X] Display relevant (meta-) information on-click of points.
+- [ ] Optional: *Animate* data / maps.
 
 ## Nice to have:
--[X] Visually appealing display of information.
--[X] Further interactivity (Zoom / Mouse-Over).
--[ ] Interpolation with additional information.
+- [X] Visually appealing display of information.
+- [X] Further interactivity (Zoom / Mouse-Over).
+- [ ] Interpolation with additional information.
 
 ## Project Approach
 Primarily, I focused on a minimal working representation of the CWS on a map of Berne.  
