@@ -1,9 +1,10 @@
 # Class to create maps based on dataframe with corresponding time filter
+
 from bokeh.io import output_file, show
 from bokeh.layouts import layout
-from bokeh.models import ColumnDataSource, HoverTool, Div, Dropdown, RadioButtonGroup
+from bokeh.models import HoverTool, Div
 from bokeh.plotting import figure
-from bokeh.tile_providers import get_provider
+from bokeh.tile_providers import get_provider  # IDE May complain that it can not find the reference, but code works.
 
 from color_factory import filter_points_by_color
 
@@ -25,60 +26,47 @@ def create_cws_map(df, suffix):
         A string that will be appended to the title of the plots as well as the html file-names.
     """
 
-
-    print("Rendering Bokeh Map...")
     tile_provider = get_provider(
-        "CARTODBPOSITRON_RETINA")  # Many Provider Variants https://docs.bokeh.org/en/latest/docs/reference/tile_providers.html
+        "CARTODBPOSITRON_RETINA")  # More Providers https://docs.bokeh.org/en/latest/docs/reference/tile_providers.html
 
-    # range bounds supplied in web mercator coordinates
+    # Range bounds supplied in web mercator coordinates
     p = figure(x_range=(825000, 833000), y_range=(5933000, 5935000),
-               x_axis_type="mercator", y_axis_type="mercator",
+               x_axis_type="mercator", y_axis_type="mercator",  # Changes axis to a more legible input
                x_axis_label="Longitude", y_axis_label="Latitude",
                sizing_mode="stretch_both")
     p.add_tile(tile_provider)
 
+    # Filter point sto be added by color
     p = filter_points_by_color(df, p)
 
+    # Add hover tools as a means for interactivity
     my_hover = HoverTool()  # https://automating-gis-processes.github.io/2016/Lesson5-interactive-map-bokeh.html#adding-interactivity-to-the-map
+
+    # Specify what parameters should be displayed when hovering
     my_hover.tooltips = [('Id', '@p_id'), ('Temperature [C]', '@ta_int'), ('Longitude', '@lon'), ('Latitude', '@lat')]
     p.add_tools(my_hover)
 
-    div = Div(
+    # Creating divs to serve as additional information
+    div_title = Div(
         align="center",
         text="<h1>Citizen Weather Stations: " + suffix + ":00</h1>",
         sizing_mode="stretch_both"
     )
+    div_subtitle = Div(
+        align="center",
+        text="Blue: Below 22 °C. <br> Orange: Between 22 °C and 28 °C. <br> Red: Above 28 °C.",
+        sizing_mode="stretch_both"
+    )
 
+    # Arrange all the bokeh elements in a layout
     layout_plot = layout([
-        [div],
+        [div_title],
+        [div_subtitle],
         [p]
     ])
 
+    # Specify output location and name
     output_file("../docu/Bern-CWS-Map_" + suffix + ".html")
+
+    # Shows the result in the default browser and saves the file
     show(layout_plot)
-
-    # LABELS = ["2019-06-26 12:00:00", "2019-06-26 13:00:00", "2019-06-26 14:00:00", "2019-06-26 15:00:00",
-    #           "2019-06-26 16:00:00", "2019-06-26 17:00:00", "2019-06-26 18:00:00", "2019-06-26 19:00:00",
-    #           "2019-06-26 20:00:00", "2019-06-26 21:00:00", "2019-06-26 22:00:00", "2019-06-26 23:00:00", ]
-    # radio_button_group = RadioButtonGroup(labels=LABELS, active=0)
-    # radio_button_group.js_on_click(CustomJS(code="""
-    #     console.log('radio_button_group: active=' + this.active, this.toString())
-    # """))
-
-    # menu = [("26.06.19 12:00", "2019-06-26 12:00:00"), ("26.06.19 13:00", "2019-06-26 13:00:00"),
-    #         ("26.06.19 14:00", "2019-06-26 14:00:00"), ("26.06.19 15:00", "2019-06-26 15:00:00"),
-    #         ("26.06.19 16:00", "2019-06-26 16:00:00"), ("26.06.19 17:00", "2019-06-26 17:00:00"),
-    #         ("26.06.19 18:00", "2019-06-26 18:00:00"), ("26.06.19 19:00", "2019-06-26 19:00:00"),
-    #         ("26.06.19 20:00", "2019-06-26 20:00:00"), ("26.06.19 21:00", "2019-06-26 21:00:00"),
-    #         ("26.06.19 22:00", "2019-06-26 22:00:00"), ("26.06.19 23:00", "2019-06-26 23:00:00"), ]
-    #
-    # dropdown = Dropdown(label="Select the time you wish to display", #https://docs.bokeh.org/en/latest/docs/user_guide/interaction/widgets.html#userguide-interaction-widgets
-    #                     align="center", button_type="primary", menu=menu, sizing_mode="stretch_width"
-    #                     )
-    #
-    # layout = layout([
-    #     [div],
-    #     # [radio_button_group],
-    #     [p],
-    #     [dropdown],
-    # ])

@@ -1,20 +1,20 @@
-# Create Map of CWS (Citizen Weather Stations) in Berne for the night of 26-27 of June, 2019.
+# Create Map of CWS (Citizen Weather Stations) in Bern for the night of 26-27 of June, 2019.
 
-import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point, Polygon
 import matplotlib.pyplot as plt
-# Unofficial Windows Binaries for Python Extension Packages - https://www.lfd.uci.edu/~gohlke/pythonlibs/
-# How to Install GEOS: https://gis.stackexchange.com/questions/38899/geos-and-shapely-installation-on-windows
+import pandas as pd
+from shapely.geometry import Point
+
 from map_factory import create_cws_map
 
-
 print("Creating geometry...")
-df = pd.read_csv("../data/sample_data.csv")
+df = pd.read_csv("../data/cws_bern_ta_level_o1_2019_Snippet_UTM.csv")
+
+# Zip yields tuples, until a single input is exhausted. We need geometry for crs conversions.
 geometry = [Point(xy) for xy in zip(df['lon'], df['lat'])]
 fig, ax = plt.subplots(figsize=(15, 15))
 
-print("Creating new geo_df...")
+print("Creating new geo dataframe...")
 geo_df = gpd.GeoDataFrame(df, crs='epsg:4326', geometry=geometry)
 
 # Remove columns where temperature is NaN
@@ -31,19 +31,8 @@ column_03 = geo_df['time'] == '2019-06-27 03:00:00'
 column_04 = geo_df['time'] == '2019-06-27 04:00:00'
 column_05 = geo_df['time'] == '2019-06-27 05:00:00'
 
+# Migrate to same CRS as OpenStreetMap
 geo_df_bokeh = geo_df.to_crs("EPSG:3785")  # https://spatialreference.org/ref/epsg/etrs89-etrs-laea/
-
-
-# print("Reading basemap for Berne...")
-# bern_map = gpd.read_file('../data/UrbanAtlas_Bern_reduced.shp') # It's in EPSG:3035 https://spatialreference.org/ref/epsg/etrs89-etrs-laea/
-
-# print("Plotting with pyplot...")
-# geo_df_alternative = geo_df.to_crs("EPSG:3035")
-# bern_map.plot(ax=ax, alpha=0.4, color="grey")
-# geo_df_alternative.plot(ax=ax, marker='*', color='green', markersize=5)
-# plt.legend(prop={'size': 50})
-# plt.show()
-
 
 print("Creating hourly maps...")
 create_cws_map(geo_df_bokeh[column_22], "26.06.19 - 22")
@@ -55,7 +44,4 @@ create_cws_map(geo_df_bokeh[column_03], "27.06.19 - 03")
 create_cws_map(geo_df_bokeh[column_04], "27.06.19 - 04")
 create_cws_map(geo_df_bokeh[column_05], "27.06.19 - 05")
 
-
 print("Script finished.")
-
-#The message attempts to be self explanatory. In order to connect real python callbacks to UI events, there has to be a real Python process running to execute the callback code. That process is the Bokeh server, and to use it you would run your code similar to:

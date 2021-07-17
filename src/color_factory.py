@@ -27,6 +27,8 @@ def filter_points_by_color(df, p):
 
     # Convert list of strings to floats
     temp_floats = [float(x) for x in df['ta_int']]
+
+    # Create boolean columns, that are as long as the float list (and the dataframe it originates from)
     column_cold = numpy.full(len(temp_floats), False)
     column_warm = numpy.full(len(temp_floats), False)
     column_hot = numpy.full(len(temp_floats), False)
@@ -38,7 +40,7 @@ def filter_points_by_color(df, p):
         else:
             column_hot[index] = True
 
-    # create Python dicts as the basis of ColumnDataSource
+    # Create Python dicts as basis of ColumnDataSource
     data_cold = {'x_values': df[column_cold]['geometry'].x,
             'y_values': df[column_cold]['geometry'].y,
             'p_id': df[column_cold]['p_id'],
@@ -60,11 +62,12 @@ def filter_points_by_color(df, p):
             'lat': df[column_hot]['lat'],
             'ta_int': df[column_hot]['ta_int']}
 
-    # create a ColumnDataSource by passing the dict
+    # Create a ColumnDataSource by passing the dict
     source_cold = ColumnDataSource(data=data_cold)
     source_warm = ColumnDataSource(data=data_warm)
     source_hot = ColumnDataSource(data=data_hot)
 
+    # Create three different variants of circles in the figure, to account for temperature difference
     p.circle(x='x_values', y='y_values', source=source_cold, color="blue")
     p.circle(x='x_values', y='y_values', source=source_warm, color="orange")
     p.circle(x='x_values', y='y_values', source=source_hot, color="red")
