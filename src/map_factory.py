@@ -5,8 +5,10 @@ from bokeh.models import ColumnDataSource, HoverTool, Div, Dropdown, RadioButton
 from bokeh.plotting import figure
 from bokeh.tile_providers import get_provider
 
+from color_factory import filter_points_by_color
 
-def create_cws_map(df, filtered_columns, suffix):
+
+def create_cws_map(df, suffix):
     """Reads in a data-frame and exports a html file, containing a bokeh map, placed within the 'docu' folder.
 
     Parameters
@@ -19,22 +21,10 @@ def create_cws_map(df, filtered_columns, suffix):
         - lat
         - ta_int
 
-    filtered_columns : boolean vector
-        Contains a boolean vector to trim the dataframe.
-
     suffix : str
         A string that will be appended to the title of the plots as well as the html file-names.
     """
-    # create a Python dict as the basis of your ColumnDataSource
-    data = {'x_values': df[filtered_columns]['geometry'].x,
-            'y_values': df[filtered_columns]['geometry'].y,
-            'p_id': df[filtered_columns]['p_id'],
-            'lon': df[filtered_columns]['lon'],
-            'lat': df[filtered_columns]['lat'],
-            'ta_int': df[filtered_columns]['ta_int']}
 
-    # create a ColumnDataSource by passing the dict
-    source = ColumnDataSource(data=data)
 
     print("Rendering Bokeh Map...")
     tile_provider = get_provider(
@@ -43,11 +33,11 @@ def create_cws_map(df, filtered_columns, suffix):
     # range bounds supplied in web mercator coordinates
     p = figure(x_range=(825000, 833000), y_range=(5933000, 5935000),
                x_axis_type="mercator", y_axis_type="mercator",
-               # Notice that passing x_axis_type="mercator" and y_axis_type="mercator" to figure generates axes with latitude and longitude labels, instead of raw Web Mercator coordinates.
                x_axis_label="Longitude", y_axis_label="Latitude",
                sizing_mode="stretch_both")
     p.add_tile(tile_provider)
-    p.circle(x='x_values', y='y_values', source=source)
+
+    p = filter_points_by_color(df, p)
 
     my_hover = HoverTool()  # https://automating-gis-processes.github.io/2016/Lesson5-interactive-map-bokeh.html#adding-interactivity-to-the-map
     my_hover.tooltips = [('Id', '@p_id'), ('Temperature [C]', '@ta_int'), ('Longitude', '@lon'), ('Latitude', '@lat')]
@@ -55,7 +45,7 @@ def create_cws_map(df, filtered_columns, suffix):
 
     div = Div(
         align="center",
-        text="<h1>Citizen Weather Station: " + suffix + ":00</h1>",
+        text="<h1>Citizen Weather Stations: " + suffix + ":00</h1>",
         sizing_mode="stretch_both"
     )
 
