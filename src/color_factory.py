@@ -4,7 +4,7 @@ from bokeh.models import ColumnDataSource
 
 
 def filter_points_by_color(df, p):
-    """Reads in a data-frame and exports a html file, containing a bokeh map, placed within the 'docu' folder.
+    """Reads in a data-frame and exports a bokeh figure containing the CWS, distributed into three colors.
 
     Parameters
     ----------

@@ -10,7 +10,7 @@ from color_factory import filter_points_by_color
 
 
 def create_cws_map(df, suffix):
-    """Reads in a data-frame and exports a html file, containing a bokeh map, placed within the 'docu' folder.
+    """Reads in a data-frame and exports a html file, containing a bokeh map, placed within the 'maps' folder.
 
     Parameters
     ----------
@@ -66,7 +66,7 @@ def create_cws_map(df, suffix):
     ])
 
     # Specify output location and name
-    output_file("../docu/Bern-CWS-Map_" + suffix + ".html")
+    output_file("../maps/Bern-CWS-Map_" + suffix + ".html")
 
     # Shows the result in the default browser and saves the file
     show(layout_plot)
