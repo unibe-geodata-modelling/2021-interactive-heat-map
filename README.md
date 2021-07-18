@@ -5,7 +5,7 @@
 This project was done as a seminar work for "Seminar Geodata Analysis and Modelling" at the University of Bern, 
 during the spring semester of 2021.
 
-The data consist of [NetAtmo citizen weather stations (CWS)](https://weathermap.netatmo.com/).
+The data consist of [NetAtmo citizen weather stations (CWS)](https://weathermap.netatmo.com/) measurements.
 
 ## Contact Data
 Name: Brian Schweigler  
@@ -33,11 +33,35 @@ Furthermore, the supervisors had the suggestion of not only making the map inter
 but also implementing a way to navigate between time-steps. 
 In theory, this sounds feasible, but when dealing with python code, it can not be dynamically recompiled in the browser.
 To connect real python callbacks to user events (like clicks), there has to be an actual Python process running to execute the callback code. 
-That process could be handled by a Bokeh server (or native javascript), but that is outside the scope of this seminar project and would deviate from the native python focus.
-With javacsript, there are variants to do everything in the browser
+That process could be handled by a Bokeh server (or plain native javascript), but that is outside the scope of this seminar project and would deviate from the native python focus.
 
 ## Result
-TODO
+The completed maps can be downloaded as html files and opened in your browser of choosing.  
+Alternatively, the following links via github pages can also be used:
+- [Bern-CWS-Map_26.06.19 - 22.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_26.06.19%20-%2022.html)
+- [Bern-CWS-Map_26.06.19 - 23.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_26.06.19%20-%2023.html)
+- [Bern-CWS-Map_27.06.19 - 00.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_27.06.19%20-%2000.html)
+- [Bern-CWS-Map_27.06.19 - 01.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_27.06.19%20-%2001.html)
+- [Bern-CWS-Map_27.06.19 - 02.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_27.06.19%20-%2002.html)
+- [Bern-CWS-Map_27.06.19 - 03.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_27.06.19%20-%2003.html)
+- [Bern-CWS-Map_27.06.19 - 04.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_27.06.19%20-%2004.html)
+- [Bern-CWS-Map_27.06.19 - 05.html](https://unibe-geodata-modelling.github.io/2021-interactive-heat-map/maps/Bern-CWS-Map_27.06.19%20-%2005.html)
+
+**A short rudimentary video demo:**  
+![Test](https://github.com/unibe-geodata-modelling/2021-interactive-heat-map/blob/main/videos/demo.gif)
+
+
+The maps speak for themselves.  
+
+Bokeh is very versatile. 
+Ease-of-use is debatable as javascript approaches can be more straight-forward, but if you are working in Python then I can definitely vouch for Bokeh and its functionality.
+
+## Repository Structure
+- data: The data used for the scripts. `sample_data.csv` was a substet used for testing, `cws_bern_ta_level_o1_2019_Snippet_UTM.csv`
+- maps: The output html files.
+- src: Contains the python files to run, `cws_overview.py` is the jumping off point which uses the other python files. Please execute that file to reproduce the results.
+  -  Each of the files has its own short documentation within the python files, so more information can be found within them.
+- videos: Contains the gif used as a video demonstration.
 
 ## Project Requirements
 - Python 3.X (Tested on 3.9)
