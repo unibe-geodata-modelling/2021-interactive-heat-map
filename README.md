@@ -56,12 +56,20 @@ The maps speak for themselves.
 Bokeh is very versatile. 
 Ease-of-use is debatable as javascript approaches can be more straight-forward, but if you are working in Python then I can definitely vouch for Bokeh and its functionality.
 
+Alternatives looked at and even partly tested: 
+- [plotly](https://plotly.com/python/), 
+- [geopandas-view](https://github.com/martinfleis/geopandas-view)
+- [hvplot](https://hvplot.holoviz.org/)
+- [cartopy](https://scitools.org.uk/cartopy/docs/latest/) - Dependencies are a pain on Windows here!
+
 ## Repository Structure
-- data: The data used for the scripts. `sample_data.csv` was a substet used for testing, `cws_bern_ta_level_o1_2019_Snippet_UTM.csv`
+- data: The data used for the scripts. `sample_data.csv` was a substet used for testing from `cws_bern_ta_level_o1_2019_Snippet_UTM.csv`.
 - maps: The output html files.
-- src: Contains the python files to run, `cws_overview.py` is the jumping off point which uses the other python files. Please execute that file to reproduce the results.
-  -  Each of the files has its own short documentation within the python files, so more information can be found within them.
+- src: Contains the python files to run, `cws_overview.py` is the jumping off point which uses the other python files. Please execute only that file to reproduce the results.
+  -  Each of the files has its own short documentation within them.
 - videos: Contains the gif used as a video demonstration.
+
+Github Pages was also set-up to provide the linking of HTML pages, quite an interesting tool.
 
 ## Project Requirements
 - Python 3.X (Tested on 3.9)
@@ -80,7 +88,7 @@ To stay within the frame of the lecture, the following improvements were left ou
 - **Larger time-frame than just a few hours in the nights of 26th to 27th of June 2019.**  
   While this is definitely doable, in the project this was based on, we only focused on that specific night, 
   as the decision-maker Stadtgrün Bern focused on that.  
-  [Here's the repository for that project. for further information](https://github.com/Brian6330/RIG-HeatMap)
+  [Here's the repository for that project for further information](https://github.com/Brian6330/RIG-HeatMap)
 
 ## Acknowledgments
 Many thanks to Dr. Andreas Zischg and Dr. Pascal Horton for the seminar and the possibility to do explorative work!
